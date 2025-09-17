@@ -45,10 +45,15 @@ outcome result(sign user, sign comp){
     string passed by refference {The reason is explained in the video lecture}
 */
 sign string_to_sign(const string &s){
-    if(s == "r") return ROCK;
-    if(s == "p") return PAPER;
-    if(s == "s") return SCISSOR;
-    return UNKNOWN;
+    if (s == "r") {
+        return ROCK;
+    } else if (s == "p") {
+        return PAPER;
+    } else if (s == "s") {
+        return SCISSOR;
+    } else {
+        return UNKNOWN;
+    }
 
 }
 
