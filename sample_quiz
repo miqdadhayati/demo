@@ -1,0 +1,120 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// =======================
+// Quiz Questions in C++
+// =======================
+
+/* ------------------------
+   A. Pointers (Q1–Q4)
+   ------------------------ */
+void Q1() {
+    cout << "Q1 Output: ";
+    int x = 4;
+    cout << *(&x) << endl;  // expected 4
+}
+
+void Q2() {
+    cout << "Q2 Output: ";
+    int z = 100; 
+    int* p1 = &z; 
+    int* p2 = p1;
+    cout << *p2 << endl;    // expected 100
+}
+
+// Q3 is a theory + code-writing exercise.
+// Shown as working swap implementations:
+void swap_val(int a, int b) { int t = a; a = b; b = t; } // does NOT affect caller
+void swap_ptr(int* pa, int* pb) { int t = *pa; *pa = *pb; *pb = t; } // works
+void swap_ref(int& a, int& b) { int t = a; a = b; b = t; } // works
+void Q3() {
+    cout << "Q3 Demonstration: ";
+    int x = 5, y = 10;
+    swap_val(x, y);
+    cout << "After swap_val: x=" << x << " y=" << y << " (no change)" << endl;
+    swap_ptr(&x, &y);
+    cout << "After swap_ptr: x=" << x << " y=" << y << endl;
+    swap_ref(x, y);
+    cout << "After swap_ref: x=" << x << " y=" << y << endl;
+}
+
+void Q4() {
+    cout << "Q4 Output: ";
+    int i = 10, j = 25;
+    int *p1 = &i, *p2 = &j;
+    int **pp = &p2;
+    cout << **pp << " ";    // 25
+    pp = &p1;
+    cout << **pp << " ";    // 10
+    p1 = &j;
+    cout << *p1 << endl;    // 25
+}
+
+/* ------------------------
+   B. Memory & Overloading (Q5–Q8)
+   ------------------------ */
+// Q5 is theory: If you forget delete[] -> memory leak.
+// Q6 is theory: After delete, pointer is dangling. Set to nullptr.
+
+// Q7 is theory: Overloading by return type alone is NOT allowed.
+
+// Q8 - function overloading demo
+int add(int a, int b) { return a + b; }
+double add(double a, double b) { return a + b; }
+void Q8() {
+    cout << "Q8 Output: ";
+    cout << add(2, 3) << " ";       // int version
+    cout << add(2.5, 3.1) << endl;  // double version
+}
+
+/* ------------------------
+   C. Classes & Constructors (Q9–Q12)
+   ------------------------ */
+// Q9 is theory: struct defaults to public, class defaults to private.
+
+// Q10:
+class Car {
+private:
+    string brand;
+    int year;
+public:
+    Car(const string& b, int y) : brand(b), year(y) {}
+    void show() { cout << brand << " " << year << endl; }
+};
+void Q10() {
+    cout << "Q10 Output: ";
+    Car c("Honda", 2010);
+    c.show(); // expected "Honda 2010"
+}
+
+// Q11 is theory: initializer lists are more efficient, required for const/reference members.
+
+// Q12: Tiny Player class
+class Player {
+private:
+    string name;
+    int score;
+public:
+    Player(const string& n, int s) : name(n), score(s) {}
+    int getScore() const { return score; }
+};
+void Q12() {
+    cout << "Q12 Output: ";
+    Player p("Alice", 50);
+    cout << "Player score = " << p.getScore() << endl;
+}
+
+/* ------------------------
+   Main: run all questions
+   ------------------------ */
+int main() {
+    Q1();
+    Q2();
+    Q3();
+    Q4();
+    Q8();
+    Q10();
+    Q12();
+    return 0;
+}
