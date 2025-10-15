@@ -1,0 +1,114 @@
+--q1
+select s.Companyname, count(p.ProductID) as noOfProducts
+from Suppliers s
+inner join Products p on s.Supplierid = p.Supplierid
+group by s.Companyname
+order by noOfProducts desc
+
+--q2
+select s.CompanyName, c.CategoryName, count(p.ProductID) as noOfProducts, avg(p.UnitPrice) as averagePrice, sum(p.UnitsInStock) as totalUnitsInStock
+from Suppliers s
+inner join Products p on s.SupplierID = p.SupplierID
+inner join Categories c on p.CategoryID = c.CategoryID
+group by s.CompanyName, c.CategoryName
+
+--q3
+select s.CompanyName as supplierName
+from Suppliers s
+inner join Products p on s.SupplierID = p.SupplierID
+group by s.CompanyName
+having count(p.ProductID) > 4
+
+--q4
+select r.RegionDescription, count(e.EmployeeID) as noOfEmployees
+from Region r
+inner join Territories t on r.RegionID = t.RegionID
+inner join EmployeeTerritories et on t.TerritoryID = et.TerritoryID
+inner join Employees e on et.EmployeeID = e.EmployeeID
+group by r.RegionDescription
+order by r.RegionDescription asc
+
+--q5
+select od.orderid, sum((od.unitprice * od.quantity) * (1 - od.discount)) as totalAmount
+from "order details" od
+group by od.orderid
+
+--q6
+select c.CategoryName, count(p.ProductID) as noOfProducts
+from Categories c
+join Products p on c.CategoryID = p.CategoryID
+group by c.CategoryName
+
+--q7
+select c.ContactName, s.CompanyName, count(o.OrderID) as noOfOrders
+from Customers c
+join Orders o on c.CustomerID = o.CustomerID
+join [Order Details] od on o.OrderID = od.OrderID
+join Products p on od.ProductID = p.ProductID
+join Suppliers s on p.SupplierID = s.SupplierID
+group by c.ContactName, s.CompanyName
+
+
+--q8
+select e.FirstName + ' ' + e.LastName as employeeName, year(o.OrderDate) as year, count(o.OrderID) as noOfOrders
+from Employees e
+join Orders o on e.EmployeeID = o.EmployeeID
+group by e.FirstName + ' ' + e.LastName, year(o.OrderDate)
+
+--q9
+select m.FirstName + ' ' + m.LastName as managerName, e.FirstName + ' ' + e.LastName as employeeName, count(o.OrderID) as noOfOrders
+from Employees e
+inner join Employees m on e.ReportsTo = m.EmployeeID
+inner join Orders o on e.EmployeeID = o.EmployeeID
+group by m.FirstName + ' ' + m.LastName, e.FirstName + ' ' + e.LastName
+order by noOfOrders desc
+
+--q10
+select r.RegionDescription as regionName, count(distinct e.EmployeeID) as noOfEmployees
+from Region r
+left join Territories t on r.RegionID = t.RegionID
+left join EmployeeTerritories et on t.TerritoryID = et.TerritoryID
+left join Employees e on et.EmployeeID = e.EmployeeID
+group by r.RegionDescription
+
+--q11
+select e.FirstName + ' ' + e.LastName as employeeFullName, c.CompanyName as customerName
+from Employees e
+cross join Customers c
+order by e.EmployeeID
+
+--q12
+select CustomerID, ContactName
+from Customers
+order by Country, ContactName
+
+--q13
+select count(distinct e.EmployeeID) as numberOfEmployees, (select count(c.CustomerID) from Customers c where c.City = e.City) as customers, e.City as cityName
+from Employees e
+group by e.City
+order by e.City
+
+--q14
+select (select count(*) from Employees e where e.City = c.City) as numberOfEmployees, count(c.CustomerID) as customers, c.City as cityName
+from Customers c
+group by c.City
+order by c.City
+
+--q15
+select o.OrderID, e.FirstName + ' ' + e.LastName as employeeFullName
+from Orders o
+join Employees e on o.EmployeeID = e.EmployeeID
+where o.ShippedDate > o.RequiredDate
+
+--q16
+select ProductID, sum(Quantity) as totalQuantity
+from [order details]
+group by ProductID
+having sum(Quantity) < 200
+
+--q17
+select CustomerID, count(OrderID) as totalNumberOfOrders
+from Orders
+where OrderDate > '1996-12-31'
+group by CustomerID
+having count(OrderID) > 15
